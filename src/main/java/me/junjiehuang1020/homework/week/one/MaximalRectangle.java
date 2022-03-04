@@ -29,7 +29,7 @@ public class MaximalRectangle {
                 }
             }
         
-            ans = Math.max(ans, largestRectangleArea(heights));
+            ans = Math.max(ans, largestRectangleAreaWithMonotonicStack(heights));
         
         }
     
@@ -40,7 +40,7 @@ public class MaximalRectangle {
 
     private static int largestRectangleArea(int[] heights) {
 
-        //暴力遍历法, 这边可以用单调栈优化一下。TODO
+        //暴力遍历法, 这边可以用单调栈优化一下
         int ans = 0;
     
         int[] exHeights = new int[heights.length + 2];
@@ -73,5 +73,37 @@ public class MaximalRectangle {
     
         return ans;
 
+    }
+    
+    private static int largestRectangleAreaWithMonotonicStack(int[] heights) {
+        
+        //利用单调栈
+        
+        int ans = 0;
+    
+        int[] exHeights = new int[heights.length + 2];
+    
+        System.arraycopy(heights, 0, exHeights, 1, heights.length);
+    
+        Deque<Integer> s = new LinkedList<>();
+    
+        for (int i = 0; i < exHeights.length; i++) {
+        
+            int left = 0;
+            int right = 0;
+        
+            while(!s.isEmpty() && exHeights[s.peek()] > exHeights[i]) {
+            
+                int h = exHeights[s.peek()];
+                right = i;
+                s.pop();
+                left = s.peek() + 1;
+                ans = Math.max(ans, h * (right - left));
+            
+            }
+            s.push(i);
+        }
+    
+        return ans;
     }
 }
