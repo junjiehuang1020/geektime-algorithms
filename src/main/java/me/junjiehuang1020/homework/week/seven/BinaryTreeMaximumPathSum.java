@@ -39,8 +39,6 @@ public class BinaryTreeMaximumPathSum {
     
     private void traverse(TreeNode root) {
         
-        int tmp = 0;
-        
         if (root == null) {
             return;
         }
